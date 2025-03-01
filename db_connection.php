@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "fullstack";
+$dbname = "webauth";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

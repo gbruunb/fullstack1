@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(empty(trim($_POST["username"]))) {
         $username_err = "Please enter a username.";
     } else {
-        $sql = "SELECT id FROM users WHERE username = ?";
+        $sql = "SELECT userId FROM users WHERE username = ?";
         
         if($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $param_username);
@@ -46,7 +46,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(empty(trim($_POST["email"]))) {
         $email_err = "Please enter an email.";
     } else {
-        $sql = "SELECT id FROM users WHERE email = ?";
+        $sql = "SELECT userId FROM users WHERE email = ?";
         
         if($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $param_email);
@@ -95,17 +95,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = "user";
         
         // Prepare an insert statement
-        $sql = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO users (username, password, email, roleID) VALUES (?, ?, ?, ?)";
          
         if($stmt = $conn->prepare($sql)) {
-            // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("ssss", $param_username, $param_password, $param_email, $param_role);
+           
             
             // Set parameters
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             $param_email = $email;
             $param_role = $role;
+
+             // Bind variables to the prepared statement as parameters
+             $stmt->bind_param("ssss", $param_username, $param_password, $param_email, $param_role);
             
             // Attempt to execute the prepared statement
             if($stmt->execute()) {
